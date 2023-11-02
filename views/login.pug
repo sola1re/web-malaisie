@@ -1,0 +1,45 @@
+doctype html
+html(lang="en")
+  head
+    title Login or Sign Up
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    style
+      include ../public/stylesheets/style.css   
+    
+  body
+    header
+      h1 Login or Sign Up
+    main
+      .login-container
+        h2 Login
+        form(action="/login", method="POST")
+          div
+            label(for="username") Username:
+            input(type="text", id="username", name="username", required)
+          div
+            label(for="password") Password:
+            input(type="password", id="password", name="password", required)
+          button(type="submit") Login
+
+      .signup-container
+        h2 Sign Up
+        form(action="/signup", method="POST")
+          div
+            label(for="signup-username") Username:
+            input(type="text", id="signup-username", name="signup-username", required)
+          div
+            label(for="signup-password") Password:
+            input(type="password", id="signup-password", name="signup-password", required)
+          div
+            label(for="country") Country:
+            input(type="text", id="country", name="country", required)
+          button(type="submit") Sign Up
+//Login or signup
+//Username 
+//Password
+//Country associated with account
+
+// 1 account = 1 country 
+// add question and answer (can have images) with tags for the 
+//theme of the question

@@ -1,0 +1,38 @@
+doctype html
+html(lang="en")
+  head
+    title Quiz Questions
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    style
+      include ../public/stylesheets/style-quiz.css
+
+  body
+    main(style=`background-color: lightblue`)
+      h1 Quiz Questions for #{region}
+      ul
+        each question in questions
+          li
+            h2= question.question
+            ul
+              li= question.answer
+              li= question.option1
+              li= question.option2
+              li= question.option3
+
+      a(href="/country") Back to Country Selection
+
+
+
+//CREATE TABLE RegionsQuiz (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    question VARCHAR(255) NOT NULL,
+    
+    answer VARCHAR(255) NOT NULL,
+    option1 VARCHAR(255) NOT NULL,
+    option2 VARCHAR(255) NOT NULL,
+    option3 VARCHAR(255) NOT NULL,
+    
+    published_by VARCHAR(50) NOT NULL,
+    region ENUM('North America', 'Europe', 'Asia', 'Oceania', 'Africa', 'South America') NOT NULL
+//);

@@ -5,15 +5,16 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     style
-      include ../public/stylesheets/style.css
+      include ../public/stylesheets/style-main.css
       
   body
     header
       h1 World Quiz
     main
+      img(src='/images/globe-svgrepo-com.svg')
       .button-container
         a(href="/login")
           button Add Questions
       .button-container
-        a(href="/select-country")
+        a(href="/country")
           button Answer Questions

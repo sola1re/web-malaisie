@@ -7,7 +7,25 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+const bodyParser = require('body-parser');
+const mysql = require('mysql2');
+
 var app = express();
+
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'user', 
+  password: '',
+  database: 'regionsquiz',
+});
+
+db.connect((err) => {
+  if (err) {
+    console.error('Database connection failed:', err);
+  } else {
+    console.log('Connected to the database');
+  }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,10 +50,29 @@ app.get('/about', (req, res) => {
 app.get('/login', (req, res) => {
   res.render('login');
 });
-app.get('/select-country', (req, res) => {
-    res.render('select-country');
+app.get('/country', (req, res) => {
+    res.render('country');
+});
+app.get('/quiz', (req, res) => {
+  res.render('quiz');
+});
+app.get('/layout', (req, res) => {
+  res.render('layout');
 });
 
+app.get('/country/:region', (req, res) => {
+  const region = req.params.region;
+  const query = "SELECT * FROM RegionsQuiz WHERE region = ?";
+  
+  db.query(query, [region], (err, results) => {
+    if (err) {
+      console.error('Error executing SQL query:', err);
+      return res.status(500).send('Error fetching quiz questions.');
+    }
+    
+    res.render('country', { questions: results });
+  });
+});
 
 
 

@@ -1,0 +1,49 @@
+doctype html
+html(lang="en")
+  head
+    title Select country
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    style
+      include ../public/stylesheets/style-map.css
+    
+    script.
+      function myFunction() {
+        alert("You clicked map!");
+      }
+
+  body
+    main(style=`background-color: lightblue`)
+      h1 Select area of the world to get quizzed on:
+      img(src='/images/map.png', usemap='#workmap')
+      map(name='workmap')
+        area(target='' alt='NA' title='NA' href='/country:#{region}' coords='215,119,60,139,35,196,124,247,166,304,215,344,271,275,292,215,267,134' shape='poly')
+        area(target='' alt='SA' title='SA' href='/country:#{region}' coords='239,333,226,367,241,430,238,511,288,512,343,380,297,334' shape='poly')
+        area(target='' alt='EU' title='EU' href='/country:#{region}' coords='506,131,393,134,426,249,473,235,515,253,547,181' shape='poly')
+        area(target='' alt='AF' title='AF' href='/country:#{region}' coords='476,241,427,255,412,293,438,319,465,324,474,380,480,418,522,417,575,378,579,300,520,259' shape='poly')
+        area(target='' alt='OC' title='OC' href='/country:#{region}' coords='835,372,753,376,735,440,785,477,873,503,940,499,947,441,888,419,860,385' shape='poly')
+        area(target='' alt='ASIA' title='ASIA' href='/country:#{region}' coords='524,133,559,180,531,252,600,266,638,329,786,365,918,115,671,60' shape='poly')
+      
+      section
+        main
+          h2 Quiz Questions
+          h1 Quiz Questions for #{region}
+          h1 Quiz Questions for #{region}
+          ul
+            each question in questions
+              li
+                h2= question.question
+                ul
+                  li= question.answer
+                  li= question.option1
+                  li= question.option2
+                  li= question.option3      
+
+    
+//Have a map of the world, and select country to click 
+
+//+ have a search bar, to look for the country
+
+//redirect to the page of the country with a random question
+
+//Always have a header with the option to login and add questions

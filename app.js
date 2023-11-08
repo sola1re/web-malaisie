@@ -14,7 +14,7 @@ var app = express();
 
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'user', 
+  user: 'root', 
   password: '',
   database: 'regionsquiz',
 });
@@ -60,19 +60,21 @@ app.get('/layout', (req, res) => {
   res.render('layout');
 });
 
+// Add a route to handle quiz questions for a specific region
 app.get('/country/:region', (req, res) => {
   const region = req.params.region;
   const query = "SELECT * FROM RegionsQuiz WHERE region = ?";
-  
+
   db.query(query, [region], (err, results) => {
     if (err) {
       console.error('Error executing SQL query:', err);
       return res.status(500).send('Error fetching quiz questions.');
     }
-    
-    res.render('country', { questions: results });
+
+    res.render('country', { questions: results, region: region });
   });
 });
+
 
 
 

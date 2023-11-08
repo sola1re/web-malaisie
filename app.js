@@ -12,6 +12,10 @@ const mysql = require('mysql2');
 
 var app = express();
 
+const cors = require('cors');
+app.use(cors());
+
+
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root', 
@@ -26,6 +30,7 @@ db.connect((err) => {
     console.log('Connected to the database');
   }
 });
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -51,18 +56,13 @@ app.get('/login', (req, res) => {
   res.render('login');
 });
 app.get('/country', (req, res) => {
-    res.render('country');
-});
-app.get('/quiz', (req, res) => {
-  res.render('quiz');
-});
-app.get('/layout', (req, res) => {
-  res.render('layout');
+  res.render('country');
 });
 
-// Add a route to handle quiz questions for a specific region
+
 app.get('/country/:region', (req, res) => {
   const region = req.params.region;
+  console.log('Requested region:', region);
   const query = "SELECT * FROM RegionsQuiz WHERE region = ?";
 
   db.query(query, [region], (err, results) => {
@@ -70,8 +70,34 @@ app.get('/country/:region', (req, res) => {
       console.error('Error executing SQL query:', err);
       return res.status(500).send('Error fetching quiz questions.');
     }
-
+  
+    console.log('Query results:', results);
     res.render('country', { questions: results, region: region });
+  });
+  
+});
+
+
+
+app.post('/check-answer', (req, res) => {
+  const questionId = req.body.questionId;
+  const userAnswer = req.body.answer;
+
+  const query = 'SELECT answer FROM RegionsQuiz WHERE id = ?';
+
+  db.query(query, [questionId], (err, results) => {
+    if (err) {
+      console.error('Error executing SQL query:', err);
+      return res.status(500).send('Error checking answer.');
+    }
+
+    const correctAnswer = results[0].answer;
+
+    if (userAnswer === correctAnswer) {
+      res.send('Correct!');
+    } else {
+      res.send('Incorrect.');
+    }
   });
 });
 
@@ -92,6 +118,12 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 module.exports = app;

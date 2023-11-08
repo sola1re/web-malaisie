@@ -1,5 +1,6 @@
 ------Database:-------
 
+
 CREATE TABLE RegionsQuiz (
     id INT PRIMARY KEY AUTO_INCREMENT,
     question VARCHAR(255) NOT NULL,
@@ -15,6 +16,7 @@ CREATE TABLE RegionsQuiz (
 
 
 ------Queries:-------
+
 
 INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region)
 VALUES ('What is the largest country in North America?', 'Canada', 'USA', 'Mexico', 'Greenland', 'Your Name', 'North America');

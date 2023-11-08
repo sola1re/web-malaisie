@@ -5,12 +5,54 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     style
-      include ../public/stylesheets/style-map.css
+      include ../public/stylesheets/style.css
     
+
+    //script.
+        document.addEventListener('submit', function (e) {
+          e.preventDefault();
+          console.log("test")
+          var form = e.target;
+          console.log(form);
+          var formData = new FormData(form);
+          console.log(formData);
+
+          fetch('/check-answer', {
+            method: 'POST',
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              showModal(data.result);
+            });
+        });
+
     script.
+      //Filter by region
       function myFunction(region) {
         window.location.href = '/country/' + region;
       }
+
+    //script.
+      function showModal(result) {
+        var modal = document.getElementById('answerModal');
+        var answerResult = document.getElementById('answerResult');
+
+        answerResult.textContent = result;
+        modal.style.display = 'block';
+
+        var closeModalButton = document.getElementById('closeModal');
+        closeModalButton.onclick = function() {
+          modal.style.display = 'none';
+        };
+
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = 'none';
+          }
+        };
+      }
+    
 
   body
     main(style=`background-color: lightblue`)
@@ -25,19 +67,24 @@ html(lang="en")
         area(target='ASIA' alt='ASIA' title='ASIA' onclick='myFunction("Asia")' coords='524,133,559,180,531,252,600,266,638,329,786,365,918,115,671,60' shape='poly')      
       section
         main
-          h2 Quiz Questions for #{region}
-          ul
-            each question in questions
-              li
-                h3= question.question
-                ul
-                  li Correct Answer: #{question.answer}
-                  li Option 1: #{question.option1}
-                  li Option 2: #{question.option2}
-                  li Option 3: #{question.option3}
-                  li Published by: #{question.published_by}
-        
-
+          h2 Quiz Questions for #{country}
+              each question in questions
+                form(action='/check-answer', method='post')
+                  input(type='hidden', name='questionId', value=question.id)
+                  h3= question.question
+                  ul
+                    each option, index in [question.answer, question.option1, question.option2, question.option3]
+                      li
+                        input(type='radio', name='answer', value=option)
+                        label(for='answer')= option
+                  button(type='submit') Submit Answer
+          
+          
+          // Hidden modal container
+          //div#answerModal.modal
+            div.modal-content
+              p#answerResult
+              button#closeModal Close
     
 //Have a map of the world, and select country to click 
 

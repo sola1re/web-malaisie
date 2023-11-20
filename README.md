@@ -13,6 +13,16 @@
         region ENUM('North America', 'Europe', 'Asia', 'Oceania', 'Africa', 'South America') NOT NULL
     );
 
+    CREATE TABLE login (
+      username VARCHAR(255) NOT NULL,
+      password VARCHAR(255) NOT NULL,
+      country VARCHAR(255) NOT NULL
+    );
+
+    ALTER TABLE `login`
+      ADD PRIMARY KEY (`username`),
+      ADD UNIQUE KEY `UNIQUE` (`username`);
+
 
 ------Queries:-------
 

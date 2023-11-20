@@ -10,6 +10,12 @@ var usersRouter = require('./routes/users');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const secretKey = '12345';
+var saltRounds = 10;
+
 var app = express();
 
 const cors = require('cors');
@@ -30,6 +36,19 @@ db.connect((err) => {
     console.log('Connected to the database');
   }
 });
+
+function generateToken(username) {
+  const payload = { username };
+  const options = { expiresIn: '1h' }; // Token expiration time
+  return jwt.sign(payload, secretKey, options); 
+}
+
+function verifyToken(token) { try {
+  const decoded = jwt.verify(token, secretKey);
+  return decoded.username; } catch (err) {
+  return null; // Token is invalid or expired }
+  }
+}
 
 
 // view engine setup
@@ -52,12 +71,82 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
   res.render('about');
 });
-app.get('/login', (req, res) => {
-  res.render('login');
-});
 app.get('/country', (req, res) => {
   res.render('country');
 });
+app.get('/register',(req,res) =>{
+  res.render('register');
+})
+
+
+
+app.get('/login',(req,res)=>{
+  const jwt = req.cookies.jwt;
+  console.log(jwt);
+  if(jwt){
+    var username = verifyToken(jwt);
+    if(username){
+      res.render('login_success',{username :username});
+    }
+    else{
+      res.cookie("jwt",'',{expires : new Date(0)});
+      res.render('login'); 
+    }
+  }
+  else{
+  res.render('login');}
+})
+
+app.post("/register", (req,res)=>{
+  var {username, password, country} = req.body;
+  console.log(username,password,country);
+  bcrypt.genSalt(saltRounds).then(salt =>{
+    bcrypt.hash(password,salt).then(hash => {
+      db.query('INSERT INTO login (username, password, country) VALUES (?, ?, ?)', [username, hash, country], (err,results) => {
+      if (err) throw err;
+      res.render('register',{results}); 
+    })}
+  )}
+  )});
+
+app.get('/login_success',(req,res) =>{
+    const token = req.cookies.jwt;
+    if(token){
+      if(verifyToken(token)){
+        res.render('login_success');
+      }
+      else{
+        res.render('login');
+      }}
+    else{
+    res.render('login_success');}
+  })
+
+app.post("/login", (req,res)=>{
+  const {username, password} = req.body;
+  db.query('SELECT password FROM login WHERE username LIKE "' + username + '"', (err,results) =>{
+    if (err) throw err;
+    console.log(results);
+    if(results[0] == undefined){
+      res.render('login_failed');
+    }
+    else{
+    const hash = results[0].password;
+    const resp = bcrypt.compareSync(password,hash);
+    console.log(resp);
+    if(resp == true){
+      const token = generateToken(username);
+      res.cookie("jwt", token,{httpOnly : true, secure : true})
+      console.log(jwt);
+      res.render('login_success',{username});
+    }
+    else{
+      res.render('login_failed');
+    }
+      }
+    }
+)});
+
 
 
 

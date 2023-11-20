@@ -6,15 +6,22 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     style
       include ../public/stylesheets/style-main.css
-      
+         
   body
     header
-      h1 World Quiz
+      header
+      a.button(href="/about") About Us
+      h1
+        a(href="/") World Quiz
     main
-      img(src='/images/globe-svgrepo-com.svg')
+      //img(src='/images/globe-svgrepo-com.svg')
+      img.resize(src='/images/animated-earth-Earth_Rotate_200_x_200.gif')
+
       .button-container
         a(href="/login")
           button Add Questions
       .button-container
         a(href="/country/0")
           button Answer Questions
+
+//https://coolors.co/palettes/popular/5b6ee1

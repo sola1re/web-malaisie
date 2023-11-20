@@ -21,6 +21,8 @@ const db = mysql.createConnection({
   user: 'root', 
   password: '',
   database: 'regionsquiz',
+  port: 3307,
+  connectTimeout: 10000,
 });
 
 db.connect((err) => {
@@ -58,6 +60,7 @@ app.get('/login', (req, res) => {
 app.get('/country', (req, res) => {
   res.render('country');
 });
+
 
 
 app.get('/country/:region', (req, res) => {

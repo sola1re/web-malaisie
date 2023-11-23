@@ -39,11 +39,26 @@ body {
   background-color: #75DDDD;
 }
 
+.buttondisconnect {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: red;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  margin-left: 800px;
+}
+.buttondisconnect:hover {
+  background-color: #dfa5a7;
+}
+
 header {
   background-color: #143268;
   padding: 10px 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -53,7 +68,7 @@ header h1 {
   margin: 0;
   padding: 10px 0;
   flex-grow: 1; 
-  margin-right: 130px;
+  margin-right: 120px;
 
 }
 
@@ -85,8 +100,27 @@ img {
   
 }
 
+.button-disconnect button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: red;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+
+  
+}
+
 .button-container button:hover {
   background-color: #75DDDD;
+}
+
+.button-disconnect button:hover {
+  background-color: #dfa5a7;
 }
 
 a{

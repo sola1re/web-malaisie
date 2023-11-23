@@ -1,0 +1,108 @@
+doctype html
+html(lang="en")
+  head
+    title Add Questions 
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    style 
+        include ../public/stylesheets/style-main.css
+    style.
+        body{
+        font-family: Arial, sans-serif;
+        background-color: #f4f7f6;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        }
+        header{
+            position:fixed;
+            top:0;
+            width:100%;
+        }
+
+        form {
+        background: white;
+        padding: 20px;
+        margin-top:60px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+        }
+
+        label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+        }
+
+        input[type="text"], select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+        }
+
+        select {
+        cursor: pointer;
+        }
+
+        button[type="submit"] {
+        background-color: #4fa0d8;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+        background-color: #3b8dbd;
+        }
+
+        .divider {
+        margin: 20px 0;
+        height: 1px;
+        background-color: #ddd;
+        }
+
+  body 
+    header
+        a.button(href="/") Home 
+        a.button(href="/loginadd") Add Question 
+        a.button(href="/country/0") Quiz
+        a.button(href="/about") About Us 
+        a.buttondisconnect(href="/disconnect") Disconnect 
+    main
+        form(action="/question", method="post")
+            div
+                label(for="question") What is your question :
+                input.question(type="text", id="question", name="question", required)
+            div
+                label(for="answer") Type the answer :
+                br
+                input.answer(type="text", id="answer", name="answer", required)
+            div 
+                label(for="option1") Type the others answer's options :
+                br 
+                input.option(type="text", name ="option1", required )
+                input.option(type="text", name ="option2", required )
+                input.option(type="text", name ="option3", required )
+            div 
+                label(for="region") Select the region your question concerns : 
+                br 
+                select(id="region" name="regions", required)
+                    option(value="" selected disabled hidden) -- Select a Region --
+                    option(value="Europe") Europe 
+                    option(value="Asia") Asia 
+                    option(value="North America") North America 
+                    option(value="Oceania") Oceania 
+                    option(value="South America") South America 
+                    option(value="Africa") Africa 
+            button(type="submit") Add your questions

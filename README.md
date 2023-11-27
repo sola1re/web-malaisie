@@ -10,7 +10,7 @@
         option3 VARCHAR(255) NOT NULL,
         
         published_by VARCHAR(50) NOT NULL,
-        region ENUM('North America', 'Europe', 'Asia', 'Oceania', 'Africa', 'South America') NOT NULL
+        region ENUM('North America', 'Europe', 'Asia', 'Oceania', 'Africa', 'South America') NOT NULL,
         user_id VARCHAR(255) NOT NULL,
 
         FOREIGN KEY (user_id) REFERENCES login(username)

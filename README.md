@@ -26,21 +26,21 @@
 
 ------Queries:-------
 
-    INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region)
-    VALUES ('What is the largest country in North America?', 'Canada', 'USA', 'Mexico', 'Greenland', 'Your Name', 'North America');
-    
-    INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region)
-    VALUES ('Which city is the capital of France?', 'Paris', 'Madrid', 'Berlin', 'London', 'Your Name', 'Europe');
-    
-    INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region)
-    VALUES ('Which river is the longest in Asia?', 'Yangtze River', 'Mekong River', 'Indus River', 'Ganges River', 'Your Name', 'Asia');
-    
-    INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region)
-    VALUES ('Which country is known as the "Land Down Under"?', 'Australia', 'New Zealand', 'Fiji', 'Papua New Guinea', 'Your Name', 'Oceania');
-    
-    INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region)
-    VALUES ('What is the largest desert in Africa?', 'Sahara Desert', 'Kalahari Desert', 'Namib Desert', 'Gobi Desert', 'Your Name', 'Africa');
-    
-    INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region)
-    VALUES ('Which mountain range runs through South America?', 'Andes', 'Rocky Mountains', 'Himalayas', 'Alps', 'Your Name', 'South America');
+    INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region, user_id)
+    VALUES ('What is the largest country in North America?', 'Canada', 'USA', 'Mexico', 'Greenland', 'Your Name', 'North                    America','Admin');
+
+    INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region, user_id)
+    VALUES ('Which city is the capital of France?', 'Paris', 'Madrid', 'Berlin', 'London', 'Your Name', 'Europe','Admin');
+
+    INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region, user_id)
+    VALUES ('Which river is the longest in Asia?', 'Yangtze River', 'Mekong River', 'Indus River', 'Ganges River', 'Your Name', 'Asia',     'Admin');
+
+    INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region, user_id)
+    VALUES ('Which country is known as the "Land Down Under"?', 'Australia', 'New Zealand', 'Fiji', 'Papua New Guinea', 'Your Name',        'Oceania', 'Admin');
+
+    INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region, user_id)
+    VALUES ('What is the largest desert in Africa?', 'Sahara Desert', 'Kalahari Desert', 'Namib Desert', 'Gobi Desert', 'Your Name',        'Africa','Admin');
+
+    INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region, user_id)
+    VALUES ('Which mountain range runs through South America?', 'Andes', 'Rocky Mountains', 'Himalayas', 'Alps', 'Your Name', 'South        America','Admin');
 

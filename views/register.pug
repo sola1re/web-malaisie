@@ -6,6 +6,7 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     style
       include ../public/stylesheets/style.css  
+      include ../public/stylesheets/style-main.css
     style. 
       body{
           font-family: Arial, sans-serif;
@@ -18,8 +19,13 @@ html(lang="en")
           height: 100vh;
           background-color: #f4f4f4;
       }
-
       header{
+        position:fixed;
+        top:0;
+        width:100%;
+      }
+
+      h1{
         background-color: #0096FF;
         color: white;
         text-align: center;
@@ -38,9 +44,7 @@ html(lang="en")
         padding: 2em;
       }
 
-      h2 {
-        margin-bottom: 1em;
-      }
+      
 
       form {
         display: flex;
@@ -75,23 +79,35 @@ html(lang="en")
       .username, .password{
         width : 220px;
       }
+      select{
+        margin-bottom: 20px;
+      }
     
   body
     header
-      h1 Sign Up
+        a.button(href="/") Home 
+        a.button(href="/loginadd") Add Question 
+        a.button(href="/country/0") Quiz
+        a.button(href="/about") About Us
+    h1 Sign Up
     main
         .signup-container
-            h2 Sign Up
             form(action="/register", method="post")
             
-                label(for="signup-username") Username:
+                label(for="username") Username:
                 input.username(type="text", id="username", name="username", required)
             
-                label(for="signup-password") Password:
+                label(for="password") Password:
                 input.password(type="password", id="password", name="password", required)
-            
-                label(for="country") Country:
-                input(type="text", id="country", name="country", required)
+                label(for="region") Region:
+                select(id="region" name="regions", required)
+                  option(value="" selected disabled hidden) -- Select a Region --
+                  option(value="Europe") Europe 
+                  option(value="Asia") Asia 
+                  option(value="North America") North America 
+                  option(value="Oceania") Oceania 
+                  option(value="South America") South America 
+                  option(value="Africa") Africa 
                 button(type="submit") Sign Up
 
         if results 

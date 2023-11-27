@@ -39,7 +39,7 @@ db.connect((err) => {
 
 function generateToken(username) {
   const payload = { username };
-  const options = { expiresIn: '1h' }; // Token expiration time
+  const options = { expiresIn: '5m' }; // Token expiration time
   return jwt.sign(payload, secretKey, options); 
 }
 
@@ -77,6 +77,34 @@ app.get('/country', (req, res) => {
 app.get('/register',(req,res) =>{
   res.render('register');
 })
+app.get('/addquestions', (req,res) =>{
+  res.render('addquestions');
+})
+app.get('/disconnect',(req,res)=>{
+  const jwt = req.cookies.jwt;
+  if(jwt){
+
+    res.cookie("jwt",'',{expires : new Date(0)});
+    res.render('index'); 
+  }
+  else{
+    res.render('index');
+  }
+})
+
+app.get('/menulogged',(req,res) =>{
+  const token = req.cookies.jwt;
+  if(token){
+    if(verifyToken(token)){
+      res.render('menulogged');
+    }
+    else{
+      res.cookie("jwt",'',{expires : new Date(0)});
+      res.render('index');
+    }}
+  else{
+  res.render('index');}
+})
 
 
 
@@ -85,42 +113,94 @@ app.get('/login',(req,res)=>{
   console.log(jwt);
   if(jwt){
     var username = verifyToken(jwt);
+    console.log(username);
     if(username){
-      res.render('login_success',{username :username});
+      res.redirect('menulogged');
     }
     else{
       res.cookie("jwt",'',{expires : new Date(0)});
-      res.render('login'); 
+      res.render('index'); 
     }
   }
   else{
   res.render('login');}
 })
 
+app.get('/loginadd',(req,res)=>{
+  const jwt = req.cookies.jwt;
+  console.log(jwt);
+  if(jwt){
+    var username = verifyToken(jwt);
+    console.log(username);
+    if(username){
+      res.redirect('addquestions');
+    }
+    else{
+      res.cookie("jwt",'',{expires : new Date(0)});
+      res.render('loginadd'); 
+    }
+  }
+  else{
+  res.render('loginadd');}
+})
+
+app.post("/loginadd", (req,res)=>{
+  const {username, password} = req.body;
+  db.query('SELECT password FROM login WHERE username LIKE "' + username + '"', (err,results) =>{
+    if (err) throw err;
+    console.log(results);
+    if(results[0] == undefined){
+      res.render('login_failed');
+    }
+    else{
+    const hash = results[0].password;
+    const resp = bcrypt.compareSync(password,hash);
+    console.log(resp);
+    if(resp == true){
+      const token = generateToken(username);
+      res.cookie("jwt", token,{httpOnly : true, secure : true})
+      console.log(jwt);
+      res.render('addquestions');
+    }
+    else{
+      res.render('login_failed');
+    }
+      }
+    }
+)});
+
 app.post("/register", (req,res)=>{
-  var {username, password, country} = req.body;
-  console.log(username,password,country);
+  var {username, password, regions} = req.body;
   bcrypt.genSalt(saltRounds).then(salt =>{
     bcrypt.hash(password,salt).then(hash => {
-      db.query('INSERT INTO login (username, password, country) VALUES (?, ?, ?)', [username, hash, country], (err,results) => {
+      db.query('INSERT INTO login (username, password, region) VALUES (?, ?, ?)', [username, hash, regions], (err,results) => {
       if (err) throw err;
-      res.render('register',{results}); 
+      res.render('index');
     })}
   )}
   )});
 
-app.get('/login_success',(req,res) =>{
-    const token = req.cookies.jwt;
-    if(token){
-      if(verifyToken(token)){
-        res.render('login_success');
-      }
-      else{
-        res.render('login');
-      }}
+  
+app.post("/question",(req,res)=>{
+  const{question,answer,option1,option2,option3,regions} = req.body;
+  
+  console.log(regions);
+  const jwt= req.cookies.jwt;
+  if(jwt){
+    var username = verifyToken(jwt);
+    console.log(username);
+    if(username){
+      db.query('INSERT INTO RegionsQuiz(question,answer,option1,option2,option3,published_by,region) VALUES (?,?,?,?,?,?,?)',[question,answer,option1,option2,option3,username,regions], (err,results)=>{
+        if (err) throw err;
+        res.render('menulogged');
+      })
+
+    }
     else{
-    res.render('login_success');}
-  })
+      res.cookie("jwt",'',{expires : new Date(0)});
+      res.render('login'); }}
+});
+
 
 app.post("/login", (req,res)=>{
   const {username, password} = req.body;
@@ -138,7 +218,7 @@ app.post("/login", (req,res)=>{
       const token = generateToken(username);
       res.cookie("jwt", token,{httpOnly : true, secure : true})
       console.log(jwt);
-      res.render('login_success',{username});
+      res.render('menulogged',{username});
     }
     else{
       res.render('login_failed');

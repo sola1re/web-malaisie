@@ -5,6 +5,7 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     style 
+      include ../public/stylesheets/style.css
       include ../public/stylesheets/style-main.css
     style.
       body{
@@ -22,6 +23,12 @@ html(lang="en")
         position:fixed;
         top:0;
         width:100%;
+      }
+      h1{
+        background-color: #0096FF;
+        color: white;
+        text-align: center;
+        padding: 1em;
       }
 
       main{
@@ -80,10 +87,10 @@ html(lang="en")
         a.button(href="/loginadd") Add Question 
         a.button(href="/country/0") Quiz
         a.button(href="/about") About Us
-    h1 Login
+    h1 Login 
     main
       .login-container
-        form(action="/login", method="post")
+        form(action="/loginadd", method="post")
           div
             label(for="username") Username:
             input.username(type="text", id="username", name="username", required)
@@ -93,11 +100,3 @@ html(lang="en")
             input.password(type="password", id="password", name="password", required)
           button(type="submit") Login
 
-//Login or signup
-//Username 
-//Password
-//Country associated with account
-
-// 1 account = 1 country 
-// add question and answer (can have images) with tags for the 
-//theme of the question

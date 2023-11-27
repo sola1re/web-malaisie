@@ -13,11 +13,11 @@
         region ENUM('North America', 'Europe', 'Asia', 'Oceania', 'Africa', 'South America') NOT NULL
     );
 
-    CREATE TABLE login (
-      username VARCHAR(255) NOT NULL,
-      password VARCHAR(255) NOT NULL,
-      country VARCHAR(255) NOT NULL
-    );
+    CREATE TABLE `login` (
+     `username` varchar(255) NOT NULL,
+     `password` varchar(255) NOT NULL,
+     `country` varchar(255) NOT NULL
+    )
 
     ALTER TABLE `login`
       ADD PRIMARY KEY (`username`),
@@ -25,6 +25,8 @@
 
 
 ------Queries:-------
+
+    INSERT INTO `login` (`username`, `password`, `country`) VALUES('Admin', 'Admin', 'Europe');
 
     INSERT INTO RegionsQuiz (question, answer, option1, option2, option3, published_by, region, user_id)
     VALUES ('What is the largest country in North America?', 'Canada', 'USA', 'Mexico', 'Greenland', 'Your Name', 'North                    America','Admin');

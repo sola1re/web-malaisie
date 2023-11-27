@@ -66,7 +66,21 @@ app.use('/users', usersRouter);
 
 // Define routes for each page
 app.get('/', (req, res) => {
-  res.render('index');
+  const jwt = req.cookies.jwt;
+  console.log(jwt);
+  if(jwt){
+    var username = verifyToken(jwt);
+    console.log(username);
+    if(username){
+      res.redirect('menulogged');
+    }
+    else{
+      res.cookie("jwt",'',{expires : new Date(0)});
+      res.render('index'); 
+    }
+  }
+  else{
+  res.render('index');}
 });
 app.get('/about', (req, res) => {
   res.render('about');

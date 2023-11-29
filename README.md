@@ -46,5 +46,5 @@
     VALUES ('What is the largest desert in Africa?', 'Sahara Desert', 'Kalahari Desert', 'Namib Desert', 'Gobi Desert', 'Africa','compteadmin');
 
     INSERT INTO Questions (question, answer, option1, option2, option3, region, user_id)
-    VALUES ('Which mountain range runs through South America?', 'Andes', 'Rocky Mountains', 'Himalayas', 'Alps', 'South America','Admin');
+    VALUES ('Which mountain range runs through South America?', 'Andes', 'Rocky Mountains', 'Himalayas', 'Alps', 'South America','compteadmin');
 

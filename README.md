@@ -26,6 +26,17 @@
       ADD UNIQUE KEY `UNIQUE` (`username`);
 
 
+    CREATE TABLE score(
+    idregion int NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    score INT DEFAULT 0,
+    attempt INT DEFAULT 0,
+    
+    FOREIGN KEY (idregion) REFERENCES region(id),
+    FOREIGN KEY (username) REFERENCES login(username),
+    PRIMARY KEY(idregion, username));
+
+
 ------Queries:-------
 
     INSERT INTO `login` (`username`, `password`, `country`) VALUES('Admin', 'Admin', 'Europe');

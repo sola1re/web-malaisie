@@ -28,7 +28,7 @@
         user_id VARCHAR(255) NOT NULL,
 
         FOREIGN KEY (user_id) REFERENCES login(username),
-        FOREIGN KEY (regionid) REFERENCES region(id),
+        FOREIGN KEY (regionid) REFERENCES region(id)
     )
 
     CREATE TABLE score(
@@ -39,7 +39,8 @@
     
         FOREIGN KEY (idregion) REFERENCES region(id),
         FOREIGN KEY (username) REFERENCES login(username),
-        PRIMARY KEY(idregion, username));
+        PRIMARY KEY(idregion, username)
+     );
 
 
 ------Queries:-------

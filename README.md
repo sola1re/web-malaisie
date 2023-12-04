@@ -3,7 +3,7 @@
      CREATE TABLE region (
          id INT PRIMARY KEY AUTO_INCREMENT,
          region VARCHAR(255) NOT NULL
-     )
+     );
     
      CREATE TABLE login (
      username varchar(255) PRIMARY KEY NOT NULL,
@@ -13,7 +13,7 @@
 
      UNIQUE(username),
      FOREIGN KEY (idregion) REFERENCES region(id)
-     )
+     );
 
      CREATE TABLE Questions (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -29,7 +29,7 @@
 
         FOREIGN KEY (user_id) REFERENCES login(username),
         FOREIGN KEY (regionid) REFERENCES region(id)
-    )
+    );
 
     CREATE TABLE score(
         idregion int NOT NULL,

@@ -8,7 +8,7 @@
      CREATE TABLE login (
      username varchar(255) PRIMARY KEY NOT NULL,
      password varchar(255) NOT NULL,
-     permission varchar(255) NOT NULL,
+     permission varchar(255) DEFAULT 'User' NOT NULL,
      idregion INT NOT NULL,
 
      UNIQUE(username),

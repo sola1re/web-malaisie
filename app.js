@@ -70,9 +70,6 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
   res.render('about');
 });
-app.get('/country', (req, res) => {
-  res.render('country');
-});
 app.get('/register',(req,res) =>{
   res.render('register');
 })
@@ -96,7 +93,7 @@ app.get('/disconnect',(req,res)=>{
 
 function generateToken(username) {
   const payload = { username };
-  const options = { expiresIn: '10m' }; // Token expiration time
+  const options = { expiresIn: '1h' }; // Token expiration time
   return jwt.sign(payload, secretKey, options); 
 }
 
@@ -159,6 +156,45 @@ app.get('/loginadd',(req,res)=>{
   else{
   res.render('loginadd');}
 })
+
+app.get('/logincountry',(req,res)=>{
+  const jwt = req.cookies.jwt;
+  if(jwt){
+    var username = verifyToken(jwt);
+    if(username){
+      res.redirect('country');
+    }
+    else{
+      res.cookie("jwt",'',{expires : new Date(0)});
+      res.render('logincountry'); 
+    }
+  }
+  else{
+  res.render('logincountry');}
+})
+
+app.post("/logincountry", (req,res)=>{
+  const {username, password} = req.body;
+  db.query('SELECT password FROM login WHERE username LIKE "' + username + '"', (err,results) =>{
+    if (err) throw err;
+    if(results[0] == undefined){
+      res.render('login_failed');
+    }
+    else{
+    const hash = results[0].password;
+    const resp = bcrypt.compareSync(password,hash);
+    if(resp == true){
+      const token = generateToken(username);
+      res.cookie("jwt", token,{httpOnly : true, secure : true})
+      res.render('country');
+    }
+    else{
+      res.render('login_failed');
+    }
+      }
+    }
+)});
+
 
 app.post("/loginadd", (req,res)=>{
   const {username, password} = req.body;
@@ -225,7 +261,7 @@ app.post("/register", (req, res) => {
           
           const regionsToInsert = [1, 2, 3, 4, 5, 6]; 
           let state = 0;
-          const scoreInserts = regionsToInsert.map(regionId => 
+          regionsToInsert.map(regionId => 
             db.query('INSERT INTO score (idregion, username) VALUES (?, ?)', [regionId, username], (err, results) => {
               if (err) {
                 return db.rollback(() => {
@@ -321,9 +357,21 @@ app.get('/account', (req, res) => {
     if(username){
       var username = verifyToken(jwt);
       db.query('SELECT Questions.id, Questions.question, Questions.answer, region.region, Questions.regionid, Questions.option1, Questions.option2, Questions.option3 FROM Questions INNER JOIN login on Questions.user_id = login.username INNER JOIN region on region.id = Questions.regionid WHERE user_id LIKE "' + username + '"',(err,results)=>{
-      if(err) throw err;
-      console.log(results);
-      res.render('account',{questions :results});
+        if (err) {
+          return db.rollback(() => {
+            return res.status(500).send('Error creating user');
+          });
+        }
+        const regions = [1,2,3,4,5,6];
+
+        db.query('SELECT score.score, score.attempt, region.region FROM score INNER JOIN region on region.id = score.idregion WHERE username LIKE "' + username + '"',(err,results2)=>{
+          if (err) {
+            return db.rollback(() => {
+              return res.status(500).send('Error creating user');
+            });
+          }
+          res.render('account',{questions :results, scores : results2});
+        })
     })
     }
     else{
@@ -384,7 +432,23 @@ app.get('/country/:region', (req, res) => {
 });
 
 app.get('/country', (req, res) => {
-  res.render('country');});
+  const jwt = req.cookies.jwt;
+  if(jwt){
+    console.log(jwt);
+    var username = verifyToken(jwt);
+    if(username){
+      console.log(username);
+      res.render('country');}
+    else{
+      console.log('1 else jwt')
+      res.cookie("jwt",'',{expires : new Date(0)});
+      res.render('logincountry'); }
+      }
+  else{
+    console.log('2 else no jwt')
+    res.render('logincountry');
+  }
+});
 
 
 

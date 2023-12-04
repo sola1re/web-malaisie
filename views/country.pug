@@ -7,6 +7,32 @@ html(lang="en")
     style
       include ../public/stylesheets/style.css
       include ../public/stylesheets/style-main.css
+    style. 
+
+      input[type="radio"]{
+        display: none;
+      }
+
+      input[type="radio"] + label {
+        color: black;
+        cursor : pointer;
+        
+      }
+
+      input[type="radio"]:checked + label{
+        color: white;
+      }
+
+      button{
+        background-color: #5B6EE1;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+      }
     script.
       //Filter by region
       function myFunction(region) {
@@ -38,12 +64,11 @@ html(lang="en")
                     input(type='hidden', name='user_id', id='user_id', value=user_id)
                     input(type='hidden', name='regionid', id='regionid', value=regionid)  
                     h3= question
-                    ul
                       each option in options
                         if option
                           li
-                            input(type='radio', name='answer', value=option)
-                            label(for='answer')= option
+                            input(type='radio', name='answer', id="opt-"+option, value=option)
+                            label(for="opt-"+option)= option
                     button(type='submit') Submit Answer 
       if output
         if output.correct

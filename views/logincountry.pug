@@ -1,0 +1,94 @@
+doctype html
+html(lang="en")
+  head
+    title WorldWizQuiz - Login
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    style 
+      include ../public/stylesheets/style-main.css
+    style.
+      body{
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          background-color: #f4f4f4;
+      }
+      header{
+        position:fixed;
+        top:0;
+        width:100%;
+      }
+
+      main{
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 300px;
+      }
+
+      .login-container {
+        padding: 2em;
+      }
+
+      h2 {
+        margin-bottom: 1em;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        margin-bottom: 0.5em;
+        font-weight: bold;
+      }
+
+      input {
+        padding: 0.5em;
+        margin-bottom: 1em;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        padding: 0.7em;
+        background-color: #0096FF;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #89CFF0;
+      } 
+
+      .username, .password{
+        width : 220px;
+      }
+    
+  body
+    header
+        a.button(href="/menulogged") Home 
+        a.button(href="/loginadd") Add Question 
+        a.button(href="/loginacc") Quiz
+        a.button(href="/about") About Us
+    h1 Login
+    main
+      .login-container
+        form(action="/logincountry", method="post")
+          div
+            label(for="username") Username:
+            input.username(type="text", id="username", name="username", required)
+          div
+            label(for="password") Password:
+            br
+            input.password(type="password", id="password", name="password", required)
+          button(type="submit") Login

@@ -217,5 +217,10 @@ html(lang="en")
                         option(value=6) Africa 
                   input.modify(type='submit', value='Modify')
       h1 My results : 
-
-        
+            each score in scores
+              h3 #{score.region}
+              div.score #{score.score} / #{score.attempt} 
+              if(score.attempt != 0) 
+                div (#{score.score*100/score.attempt} %) 
+              else 
+                div (0 %)

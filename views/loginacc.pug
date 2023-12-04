@@ -1,13 +1,12 @@
 doctype html
 html(lang="en")
   head
-    title WorldWizQuiz - Sign Up
+    title WorldWizQuiz - Login
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
-    style
-      include ../public/stylesheets/style.css  
+    style 
       include ../public/stylesheets/style-main.css
-    style.  
+    style.
       body{
           font-family: Arial, sans-serif;
           margin: 0;
@@ -25,8 +24,6 @@ html(lang="en")
         width:100%;
       }
 
-      
-
       main{
         background-color: #fff;
         border-radius: 8px;
@@ -35,11 +32,13 @@ html(lang="en")
         width: 300px;
       }
 
-      .signup-container {
+      .login-container {
         padding: 2em;
       }
 
-      
+      h2 {
+        margin-bottom: 1em;
+      }
 
       form {
         display: flex;
@@ -74,9 +73,6 @@ html(lang="en")
       .username, .password{
         width : 220px;
       }
-      select{
-        margin-bottom: 20px;
-      }
     
   body
     header
@@ -84,26 +80,15 @@ html(lang="en")
         a.button(href="/loginadd") Add Question 
         a.button(href="/country") Quiz
         a.button(href="/about") About Us
-    h1 Sign Up
+    h1 Login
     main
-        .signup-container
-            form(action="/register", method="post")
-            
-                label(for="username") Username:
-                input.username(type="text", id="username", name="username", required)
-            
-                label(for="password") Password:
-                input.password(type="password", id="password", name="password", required)
-                label(for="region") Region:
-                select(id="region" name="regions", required)
-                  option(value="" selected disabled hidden) -- Select a Region --
-                  option(value=4) Europe 
-                  option(value=5) Asia 
-                  option(value=2) North America 
-                  option(value=1) Oceania 
-                  option(value=3) South America 
-                  option(value=6) Africa 
-                button(type="submit") Sign Up
-
-        if results 
-            h2   Registration successful!
+      .login-container
+        form(action="/loginacc", method="post")
+          div
+            label(for="username") Username:
+            input.username(type="text", id="username", name="username", required)
+          div
+            label(for="password") Password:
+            br
+            input.password(type="password", id="password", name="password", required)
+          button(type="submit") Login

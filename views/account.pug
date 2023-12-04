@@ -1,18 +1,221 @@
 doctype html 
 html(lang="en")
   head
-    title Your Page Title
+    title WorldWizQuiz - My Account
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     style
       include ../public/stylesheets/style-main.css
+    style. 
+      main {
+          max-width: 800px;
+          margin: 20px auto;
+      }
+
+      
+      main h1 {
+          margin-bottom: 10px;
+          color: #333;
+      }
+
+      
+      .question-answer {
+          margin-top:40px;
+          background-color: #ffffff;
+          border: 2px solid #ddd;
+          border-radius: 5px;
+          padding: 15px;
+          margin-bottom: 10px;;
+          box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+          transition: border-color 0.3s ease;
+      }
+
+      .question-answer:hover {
+          border-color: #e8491d;
+      }
+
+      
+      .question-answer h3 {
+          color: #333;
+      }
+
+      
+      .question-answer .answer, .region {
+          color: #555;
+          font-style: italic;
+      }
+
+      .modifyForm-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 2;
+      }
+
+      .modifyForm {
+        margin-bottom : 100px;
+        position: fixed;
+        background: white;
+        width: 50%;
+        height : 85%;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        z-index: 3;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius : 5px;
+      }
+
+      .form.input {
+        margin-top: 10px;
+      }
+
+
+      .dark {
+        filter: brightness(50%);
+      }
+
+      form {
+        background: white;
+        padding-top: 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+      }
+
+      label {
+        display: block;
+        margin-top: 30px;
+        color: #333;
+      }
+
+      input[type="text"], select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+        select {
+        cursor: pointer;
+        }
+
+        button[type="submit"] {
+        background-color: #4fa0d8;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+        background-color: #3b8dbd;
+        }
+
+        .divider {
+        margin: 20px 0;
+        height: 1px;
+        background-color: #ddd;
+        }
+
+
+
+    script.
+      
+      function openModifyQuestion(event) {
+        const questionId = event.target.getAttribute('data-id');
+        console.log(questionId);
+        document.getElementById('modifyForm-'+questionId).hidden = false ;
+      }
+
+      function deleteQuestion(event) {
+        const questionId = event.target.getAttribute('data-id');
+        const isConfirm = confirm("Do you really want to delete this question ?");
+        console.log(questionId);
+        if(isConfirm){
+        fetch('/delete-question/' + questionId, { method: 'DELETE' })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          window.location.reload()    })
+        .catch(error => console.error('Erreur:', error));}
+      }
+      
+
+
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.modify-icon').forEach(function(item) {
+          item.addEventListener('click', openModifyQuestion);
+        });
+
+      document.querySelectorAll('.delete-icon').forEach(function(item) {
+        item.addEventListener('click', deleteQuestion);
+        });
+
+      document.getElementById('closeModal').addEventListener('click', function() {
+          document.getElementById('modifyForm').style.display = 'none';
+          var mainElement = document.querySelector('body');
+          mainElement.classList.remove('dark');
+        });        
+      });
+
+
   body            
     header
         a.button(href="/menulogged") Home 
         a.button(href="/loginadd") Add Question 
-        a.button(href="/country/0") Quiz
+        a.button(href="/country") Quiz
         a.button(href="/about") About Us
         a.buttonaccount(href="/account") My Account 
         a.buttondisconnect(href="/disconnect") Disconnect 
     main    
+      h1 My questions :
+            each question in questions
+              .question-answer
+                .actions
+                  img.modify-icon(src='/images/modify.png', data-id = question.id, width="30")
+                  img.delete-icon(src='/images/delete.png', data-id = question.id, width="30")
+                h3= question.question
+
+                div.answer Answer : #{question.answer}  
+                div.region Region : #{question.region}
+
+              form.modifyForm(action="/modify", method="post", id="modifyForm-"+question.id, hidden)                   
+                  input(type="hidden",name ="questionId", id="questionId", value=question.id,required)
+                  div.forminput
+                      label(for="question") Question :
+                      input.question(type="text", id="question", name="question", value =question.question, required)
+                  div.forminput
+                      label(for="answer") Answer :
+                      
+                      input.answer(type="text", id="answer", name="answer", value = question.answer ,required)
+                  div.forminput
+                      label(for="option1") Options :
+                      
+                      input.option(type="text", name ="option1", value = question.option1, required )
+                      input.option(type="text", name ="option2", value = question.option2)
+                      input.option(type="text", name ="option3", value = question.option3)
+                  div.forminput 
+                      label(for="region") Region : 
+                      br 
+                      select(id="region" name="regions",required)
+                        option(value=question.regionid, selected hidden)  #{question.region}
+                        option(value=4) Europe 
+                        option(value=5) Asia 
+                        option(value=2) North America 
+                        option(value=1) Oceania 
+                        option(value=3) South America 
+                        option(value=6) Africa 
+                  input.modify(type='submit', value='Modify')
+      h1 My results : 
+
         

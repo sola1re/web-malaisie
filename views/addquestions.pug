@@ -1,7 +1,7 @@
 doctype html
 html(lang="en")
   head
-    title Add Questions 
+    title WorldWizQuiz - Add Questions 
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     style 
@@ -47,6 +47,7 @@ html(lang="en")
         border-radius: 4px;
         box-sizing: border-box;
         }
+        
 
         select {
         cursor: pointer;
@@ -76,33 +77,34 @@ html(lang="en")
     header
         a.button(href="/menulogged") Home 
         a.button(href="/loginadd") Add Question 
-        a.button(href="/country/0") Quiz
+        a.button(href="/country") Quiz
         a.button(href="/about") About Us 
+        a.buttonaccount(href="/account") My Account 
         a.buttondisconnect(href="/disconnect") Disconnect 
     main
         form(action="/question", method="post")
             div
-                label(for="question") What is your question :
+                label(for="question") Question :
                 input.question(type="text", id="question", name="question", required)
             div
-                label(for="answer") Type the answer :
+                label(for="answer") Answer :
                 br
                 input.answer(type="text", id="answer", name="answer", required)
             div 
-                label(for="option1") Type the others answer's options :
+                label(for="option1") Options :
                 br 
-                input.option(type="text", name ="option1", required )
-                input.option(type="text", name ="option2", required )
-                input.option(type="text", name ="option3", required )
+                input.option(type="text", name ="option1",placeholder="required", required )
+                input.option(type="text", name ="option2", placeholder="optional")
+                input.option(type="text", name ="option3", placeholder="optional")
             div 
-                label(for="region") Select the region your question concerns : 
+                label(for="region") Region : 
                 br 
                 select(id="region" name="regions", required)
                     option(value="" selected disabled hidden) -- Select a Region --
-                    option(value="Europe") Europe 
-                    option(value="Asia") Asia 
-                    option(value="North America") North America 
-                    option(value="Oceania") Oceania 
-                    option(value="South America") South America 
-                    option(value="Africa") Africa 
+                    option(value=4) Europe 
+                    option(value=5) Asia 
+                    option(value=2) North America 
+                    option(value=1) Oceania 
+                    option(value=3) South America 
+                    option(value=6) Africa 
             button(type="submit") Add your questions

@@ -13,7 +13,7 @@ const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const secretKey = '12345';
+const secretKey = '123456789123456789123456789';
 var saltRounds = 10;
 
 var app = express();
@@ -36,21 +36,6 @@ db.connect((err) => {
     console.log('Connected to the database');
   }
 });
-
-function generateToken(username) {
-  const payload = { username };
-  const options = { expiresIn: '5m' }; // Token expiration time
-  return jwt.sign(payload, secretKey, options); 
-}
-
-function verifyToken(token) { try {
-  const decoded = jwt.verify(token, secretKey);
-  return decoded.username; } catch (err) {
-  return null; // Token is invalid or expired }
-  }
-}
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -69,8 +54,8 @@ app.get('/', (req, res) => {
   const jwt = req.cookies.jwt;
   console.log(jwt);
   if(jwt){
+    console.log(jwt);
     var username = verifyToken(jwt);
-    console.log(username);
     if(username){
       res.redirect('menulogged');
     }
@@ -106,28 +91,27 @@ app.get('/disconnect',(req,res)=>{
   }
 })
 
-app.get('/menulogged',(req,res) =>{
-  const token = req.cookies.jwt;
-  if(token){
-    if(verifyToken(token)){
-      res.render('menulogged');
-    }
-    else{
-      res.cookie("jwt",'',{expires : new Date(0)});
-      res.render('index');
-    }}
-  else{
-  res.render('index');}
-})
 
+                                              // AUTHENTIFICATION PART //
+
+function generateToken(username) {
+  const payload = { username };
+  const options = { expiresIn: '10m' }; // Token expiration time
+  return jwt.sign(payload, secretKey, options); 
+}
+
+function verifyToken(token) { try {
+  const decoded = jwt.verify(token, secretKey);
+  return decoded.username; } catch (err) {
+  return null; // Token is invalid or expired }
+  }
+}
 
 
 app.get('/login',(req,res)=>{
   const jwt = req.cookies.jwt;
-  console.log(jwt);
   if(jwt){
     var username = verifyToken(jwt);
-    console.log(username);
     if(username){
       res.redirect('menulogged');
     }
@@ -140,12 +124,30 @@ app.get('/login',(req,res)=>{
   res.render('login');}
 })
 
-app.get('/loginadd',(req,res)=>{
+app.get('/loginacc',(req,res)=>{
   const jwt = req.cookies.jwt;
-  console.log(jwt);
   if(jwt){
     var username = verifyToken(jwt);
-    console.log(username);
+    if(username){
+      db.query('SELECT * FROM Questions INNER JOIN login on Questions.user_id = login.username WHERE user_id LIKE "' + username + '"',(err,results)=>{
+        if(err) throw err;
+        
+        res.render('account',{questions :results});
+    })
+    }
+    else{
+      res.cookie("jwt",'',{expires : new Date(0)});
+      res.render('loginacc'); 
+    }
+  }
+  else{
+  res.render('loginacc');}
+})
+
+app.get('/loginadd',(req,res)=>{
+  const jwt = req.cookies.jwt;
+  if(jwt){
+    var username = verifyToken(jwt);
     if(username){
       res.redirect('addquestions');
     }
@@ -162,18 +164,15 @@ app.post("/loginadd", (req,res)=>{
   const {username, password} = req.body;
   db.query('SELECT password FROM login WHERE username LIKE "' + username + '"', (err,results) =>{
     if (err) throw err;
-    console.log(results);
     if(results[0] == undefined){
       res.render('login_failed');
     }
     else{
     const hash = results[0].password;
     const resp = bcrypt.compareSync(password,hash);
-    console.log(resp);
     if(resp == true){
       const token = generateToken(username);
       res.cookie("jwt", token,{httpOnly : true, secure : true})
-      console.log(jwt);
       res.render('addquestions');
     }
     else{
@@ -183,28 +182,168 @@ app.post("/loginadd", (req,res)=>{
     }
 )});
 
-app.post("/register", (req,res)=>{
-  var {username, password, regions} = req.body;
-  bcrypt.genSalt(saltRounds).then(salt =>{
-    bcrypt.hash(password,salt).then(hash => {
-      db.query('INSERT INTO login (username, password, region) VALUES (?, ?, ?)', [username, hash, regions], (err,results) => {
+app.post("/loginacc", (req,res)=>{
+  const {username, password} = req.body;
+  db.query('SELECT password FROM login WHERE username LIKE "' + username + '"', (err,results) =>{
+    if (err) throw err;
+    if(results[0] == undefined){
+      res.render('login_failed');
+    }
+    else{
+    const hash = results[0].password;
+    const resp = bcrypt.compareSync(password,hash);
+    if(resp == true){
+      const token = generateToken(username);
+      res.cookie("jwt", token,{httpOnly : true, secure : true})
+  
+        
+        res.redirect('account');
+    }
+    else{
+      res.render('login_failed');
+    }
+      }
+    }
+)});
+
+app.post("/register", (req, res) => {
+  const { username, password, regions } = req.body;
+  
+  db.beginTransaction(err => {
+    if (err) {
+      return res.status(500).send('Server error');
+    }
+
+    bcrypt.genSalt(saltRounds).then(salt => {
+      bcrypt.hash(password, salt).then(hash => {
+        db.query('INSERT INTO login (username, password, idregion) VALUES (?, ?, ?)', [username, hash, regions], (err, results) => {
+          if (err) {
+            return db.rollback(() => {
+              return res.status(500).send('Error creating user');
+            });
+          }
+          
+          const regionsToInsert = [1, 2, 3, 4, 5, 6]; 
+          let state = 0;
+          const scoreInserts = regionsToInsert.map(regionId => 
+            db.query('INSERT INTO score (idregion, username) VALUES (?, ?)', [regionId, username], (err, results) => {
+              if (err) {
+                return db.rollback(() => {
+                  return res.status(500).send('Error initializing score');
+                });
+              }
+              state ++;
+              if (state == 6){
+                db.commit(err => {
+                  if (err) {
+                    return db.rollback(() => {
+                      return res.status(500).send('Error committing transaction');
+                    });
+                  }
+                  res.redirect('login');
+                });
+              }
+            })
+          );
+        });
+      });
+    });
+  });
+});
+
+
+
+  app.post("/login", (req,res)=>{
+    const {username, password} = req.body;
+    db.query('SELECT password FROM login WHERE username LIKE "' + username + '"', (err,results) =>{
       if (err) throw err;
-      res.render('index');
-    })}
-  )}
+      if(results[0] == undefined){
+        res.render('login_failed');
+      }
+      else{
+      const hash = results[0].password;
+      const resp = bcrypt.compareSync(password,hash);
+      if(resp == true){
+        const token = generateToken(username);
+        res.cookie('jwt', token,{httpOnly : true, secure : true})
+        res.render('menulogged',{username});
+      }
+      else{
+        res.render('login_failed');
+      }
+        }
+      }
   )});
+
+
+
+
+
+app.get('/menulogged',(req,res) =>{
+  const token = req.cookies.jwt;
+  if(token){
+    if(verifyToken(token)){
+      res.render('menulogged');
+    }
+    else{
+      res.cookie("jwt",'',{expires : new Date(0)});
+      res.render('index');
+    }}
+  else{
+  res.render('index');}
+})
+
+app.post('/modify', function(req,res){
+
+  const{questionId,question,answer,option1,option2,option3,regions} = req.body;
+  const jwt= req.cookies.jwt;
+  if(jwt){
+    var username = verifyToken(jwt);
+    if(username){
+      db.query('UPDATE Questions SET question = ?, answer = ?, option1 = ?, option2 = ?, option3 = ?, regionid = ?  WHERE id = ?',[question,answer,option1,option2,option3,regions,questionId], (err,results)=>{
+      if(err) throw err;
+      res.redirect('account');
+      })}
+    else{
+      res.cookie("jwt",'',{expires : new Date(0)});
+      res.render('loginacc');
+    }}
+  else{
+      res.redirect('loginacc');
+    }
+    
+  })
+
+app.get('/account', (req, res) => {
+  const jwt = req.cookies.jwt;
+  if(jwt){
+    var username = verifyToken(jwt);
+    if(username){
+      var username = verifyToken(jwt);
+      db.query('SELECT Questions.id, Questions.question, Questions.answer, region.region, Questions.regionid, Questions.option1, Questions.option2, Questions.option3 FROM Questions INNER JOIN login on Questions.user_id = login.username INNER JOIN region on region.id = Questions.regionid WHERE user_id LIKE "' + username + '"',(err,results)=>{
+      if(err) throw err;
+      console.log(results);
+      res.render('account',{questions :results});
+    })
+    }
+    else{
+      res.cookie("jwt",'',{expires : new Date(0)});
+      res.redirect('loginacc'); 
+    }
+  }
+  else{
+  res.redirect('loginacc');}
+});
+
 
   
 app.post("/question",(req,res)=>{
   const{question,answer,option1,option2,option3,regions} = req.body;
-  
-  console.log(regions);
   const jwt= req.cookies.jwt;
   if(jwt){
     var username = verifyToken(jwt);
-    console.log(username);
     if(username){
-      db.query('INSERT INTO RegionsQuiz(question,answer,option1,option2,option3,published_by,region) VALUES (?,?,?,?,?,?,?)',[question,answer,option1,option2,option3,username,regions], (err,results)=>{
+      db.query('INSERT INTO Questions(question,answer,option1,option2,option3,regionid,user_id) VALUES (?,?,?,?,?,?,?)',[question,answer,option1,option2,option3,regions,username], (err,results)=>{
         if (err) throw err;
         res.render('menulogged');
       })
@@ -215,77 +354,73 @@ app.post("/question",(req,res)=>{
       res.render('login'); }}
 });
 
-
-app.post("/login", (req,res)=>{
-  const {username, password} = req.body;
-  db.query('SELECT password FROM login WHERE username LIKE "' + username + '"', (err,results) =>{
-    if (err) throw err;
-    console.log(results);
-    if(results[0] == undefined){
-      res.render('login_failed');
-    }
-    else{
-    const hash = results[0].password;
-    const resp = bcrypt.compareSync(password,hash);
-    console.log(resp);
-    if(resp == true){
-      const token = generateToken(username);
-      res.cookie("jwt", token,{httpOnly : true, secure : true})
-      console.log(jwt);
-      res.render('menulogged',{username});
-    }
-    else{
-      res.render('login_failed');
-    }
-      }
-    }
-)});
-
-
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]]; // échange des éléments
+  }
+  return array;
+}
 
 
 app.get('/country/:region', (req, res) => {
   const region = req.params.region;
   console.log('Requested region:', region);
-  const query = "SELECT * FROM RegionsQuiz WHERE region = ?";
+  const query = "SELECT Questions.id, Questions.question, Questions.answer, Questions.option1, Questions.option2, Questions.option3, Questions.regionid, Questions.user_id, region.region FROM Questions INNER JOIN region on region.id = Questions.regionid WHERE region = ? ORDER BY RAND() LIMIT 1";
 
   db.query(query, [region], (err, results) => {
     if (err) {
       console.error('Error executing SQL query:', err);
       return res.status(500).send('Error fetching quiz questions.');
     }
-  
+    const question = results[0];
+    const options = shuffleArray([question.answer, question.option1, question.option2, question.option3]);
     console.log('Query results:', results);
-    res.render('country', { questions: results, region: region });
+    console.log('id : ', question.id);
+
+    res.render('country', { user_id : question.user_id, regionid : question.regionid, id : question.id,question: question.question,options, region: region, bool : true });
   });
   
 });
+
+app.get('/country', (req, res) => {
+  res.render('country');});
 
 
 
 app.post('/check-answer', (req, res) => {
   const questionId = req.body.questionId;
   const userAnswer = req.body.answer;
-
-  const query = 'SELECT answer FROM RegionsQuiz WHERE id = ?';
+  const jwt = req.cookies.jwt;
+  var username = verifyToken(jwt);
+  const query = 'SELECT answer FROM Questions WHERE id = ?';
 
   db.query(query, [questionId], (err, results) => {
     if (err) {
       console.error('Error executing SQL query:', err);
       return res.status(500).send('Error checking answer.');
     }
-
     const correctAnswer = results[0].answer;
 
     if (userAnswer === correctAnswer) {
-      res.send('Correct!');
-    } else {
-      res.send('Incorrect.');
-    }
-  });
+      db.query('UPDATE score SET score = score + 1, attempt = attempt + 1 WHERE idregion = ? AND username = ? ', [req.body.regionid, username], (err,results)=>{
+      res.render('country', ({ bool : true},{output:{correct :true, message : "Correct !"}}));
+    })}
+    else{
+      db.query('UPDATE score SET attempt = attempt + 1 WHERE idregion = ? AND username = ?', [req.body.regionid, username], (err,results)=>{
+      res.render('country', ({ bool : true},{output:{correct :false, message : "Incorrect !"}}));
+    })
+    };
+});
 });
 
-
+app.delete('/delete-question/:id', function(req, res) {
+  const questionId = req.params.id;
+  db.query('DELETE FROM Questions WHERE id = ?', [questionId], (err,results)=>{
+    if(err) throw err;
+  })
+  res.json({ message: 'Question supprimée avec succès' });
+});
 
 
 // catch 404 and forward to error handler

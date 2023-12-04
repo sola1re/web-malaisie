@@ -39,6 +39,22 @@ body {
   background-color: #75DDDD;
 }
 
+.buttonaccount {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #3F3F74;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  margin-left: 690px;
+}
+.buttonaccount:hover {
+  background-color: #75DDDD;
+}
+
 .buttondisconnect {
   display: inline-block;
   padding: 10px 20px;
@@ -49,7 +65,7 @@ body {
   border-radius: 5px;
   font-size: 16px;
   transition: background-color 0.3s;
-  margin-left: 800px;
+  margin-left: 30px;
 }
 .buttondisconnect:hover {
   background-color: #dfa5a7;
@@ -126,4 +142,12 @@ img {
 a{
   color:#e0fbfc;
   font-family: Boreal;
+}
+
+.containerquestions{
+
+  background-color: lightblue;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top:30px;
 }

@@ -2,7 +2,7 @@
 
      CREATE TABLE region (
          id INT PRIMARY KEY AUTO_INCREMENT,
-         region VARCHAR(255) NOT NULL
+         region ENUM("Europe","North America","South America","Oceania","Africa","Asia") NOT NULL
      );
     
      CREATE TABLE login (

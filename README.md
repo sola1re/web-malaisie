@@ -45,7 +45,10 @@
 
 ------Queries:-------
 
-    INSERT INTO `login` (`username`, `password`, `country`) VALUES('Admin', 'Admin', 'Europe');
+    INSERT INTO `login` (`username`, `password`, `permission`, `idregion`) VALUES
+     ('compteadmin', '$2b$10$bdrA1nu44Dd4kEShObDWp.Ph4CTM6J4WXCjRtuUMB.QtwPU/Zx9mC', 'Admin', 5),
+     ('Paul', '$2b$10$Nnyx/KoSbPs1/ft7wlyHj.M0D6OsXGvWjxWsVodhphVZbz7HsbYby', 'User', 4),
+     ('Raph', '$2b$10$I8xSU1bLxj1Ihnix1upVLOaeUXmEMIe5lErGOT2r5Ib9dNnPn4lv.', 'User', 4);
 
     INSERT INTO Questions (question, answer, option1, option2, option3, region, user_id)
     VALUES ('What is the largest country in North America?', 'Canada', 'USA', 'Mexico', 'Greenland', 'North America','compteadmin');

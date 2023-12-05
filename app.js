@@ -51,6 +51,9 @@ app.use('/users', usersRouter);
 
 // Define routes for each page
 app.get('/', (req, res) => {
+  res.redirect('menu');});
+app.get('/menu', (req, res) => {
+  console.log("test");
   const jwt = req.cookies.jwt;
   console.log(jwt);
   if(jwt){
@@ -61,11 +64,24 @@ app.get('/', (req, res) => {
     }
     else{
       res.cookie("jwt",'',{expires : new Date(0)});
-      res.render('index'); 
+      db.query('SELECT * FROM Questions INNER JOIN region on region.id = Questions.regionid ORDER BY RAND() LIMIT 2',(err,results)=>{
+        const question1 = results[0];
+        const options1 = shuffleArray([question1.answer, question1.option1, question1.option2, question1.option3]);
+        const question2 = results[1];
+        const options2 = shuffleArray([question2.answer, question2.option1, question2.option2, question2.option3]);
+      res.render('menu', {question1, question2 , options1, options2});
+    })
     }
   }
   else{
-  res.render('index');}
+    db.query('SELECT * FROM Questions INNER JOIN region on region.id = Questions.regionid ORDER BY RAND() LIMIT 2',(err,results)=>{
+      const question1 = results[0];
+      const options1 = shuffleArray([question1.answer, question1.option1, question1.option2, question1.option3]);
+      const question2 = results[1];
+      const options2 = shuffleArray([question2.answer, question2.option1, question2.option2, question2.option3]);
+    res.render('menu', {question1, question2 , options1, options2});
+  })}
+  
 });
 app.get('/about', (req, res) => {
   res.render('about');
@@ -81,10 +97,10 @@ app.get('/disconnect',(req,res)=>{
   if(jwt){
 
     res.cookie("jwt",'',{expires : new Date(0)});
-    res.render('index'); 
+    res.redirect('menu'); 
   }
   else{
-    res.render('index');
+    res.redirect('menu');
   }
 })
 
@@ -114,7 +130,7 @@ app.get('/login',(req,res)=>{
     }
     else{
       res.cookie("jwt",'',{expires : new Date(0)});
-      res.render('index'); 
+      res.render('login'); 
     }
   }
   else{
@@ -302,7 +318,7 @@ app.post("/register", (req, res) => {
       if(resp == true){
         const token = generateToken(username);
         res.cookie('jwt', token,{httpOnly : true, secure : true})
-        res.render('menulogged',{username});
+        res.redirect('menulogged');
       }
       else{
         res.render('login_failed');
@@ -319,14 +335,19 @@ app.get('/menulogged',(req,res) =>{
   const token = req.cookies.jwt;
   if(token){
     if(verifyToken(token)){
-      res.render('menulogged');
-    }
+      db.query('SELECT * FROM Questions INNER JOIN region on region.id = Questions.regionid ORDER BY RAND() LIMIT 2',(err,results)=>{
+        const question1 = results[0];
+        const options1 = shuffleArray([question1.answer, question1.option1, question1.option2, question1.option3]);
+        const question2 = results[1];
+        const options2 = shuffleArray([question2.answer, question2.option1, question2.option2, question2.option3]);
+      res.render('menulogged', {question1, question2 , options1, options2});
+    })}
     else{
       res.cookie("jwt",'',{expires : new Date(0)});
-      res.render('index');
+      res.redirect('menu');
     }}
   else{
-  res.render('index');}
+  res.redirect('menu');}
 })
 
 app.post('/modify', function(req,res){
@@ -370,10 +391,28 @@ app.get('/account', (req, res) => {
               return res.status(500).send('Error creating user');
             });
           }
-          res.render('account',{questions :results, scores : results2});
+          db.query('SELECT login.permission FROM login WHERE username LIKE "' + username + '"',(err,results3)=>{
+            if(err){
+              return db.rollback(() => {
+                return res.status(500).send('Error creating user');
+              });
+            }
+            if (results3[0].permission == "Admin")
+              {
+                db.query('SELECT Questions.id, Questions.question, Questions.answer, region.region, Questions.regionid, Questions.option1, Questions.option2, Questions.option3, Questions.user_id FROM Questions INNER JOIN login on Questions.user_id = login.username INNER JOIN region on region.id = Questions.regionid WHERE user_id NOT LIKE "' + username + '"',(err,results4)=>{
+                  if (err) {
+                    return db.rollback(() => {
+                      return res.status(500).send('Error creating user');
+                    });
+                  }
+                  res.render('account',{questions :results, regions : regions, scores : results2, admin : true, questions2 : results4});
+                })
+              }
+            else{
+              res.render('account',{questions :results, regions : regions, scores : results2, admin : false});}
         })
     })
-    }
+    })}
     else{
       res.cookie("jwt",'',{expires : new Date(0)});
       res.redirect('loginacc'); 
@@ -484,6 +523,20 @@ app.delete('/delete-question/:id', function(req, res) {
     if(err) throw err;
   })
   res.json({ message: 'Question supprimée avec succès' });
+});
+
+app.delete('/delete-user/:username', function(req, res) {
+  const username = req.params.username;
+  db.query('DELETE FROM Questions WHERE user_id = ?', [username], (err,results)=>{
+    if(err) throw err;
+    db.query('DELETE FROM score WHERE username = ?', [username], (err,results)=>{
+    if(err) throw err;
+    db.query('DELETE FROM login WHERE username = ?', [username], (err,results)=>{
+      if(err) throw err;
+    })
+  })
+  res.json({ message: 'Utilisateur supprimé avec succès' });
+})
 });
 
 

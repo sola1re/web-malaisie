@@ -6,12 +6,26 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     style
       include ../public/stylesheets/style-main.css
+    style. 
+      article{
+        display:flex;
+        position:fixed;
+        top:200px;
+        }
+      #containerquestions1{
+        width:300px;
+        margin-left:100px;
+      }
+      #containerquestions2{
+        width:300px;
+        margin-left:550px;
+      }
          
   body
     header
       a.button(href="/about") About Us
       h1
-        a(href="/menulogged") World Quiz
+        a(href="/menulogged") WorldWizQuiz
     main
       img(src='/images/globe-svgrepo-com.svg')
       .button-container 
@@ -29,6 +43,20 @@ html(lang="en")
       .button-container
         a(href="/account")
           button My Account 
+
+    article 
+        section.containerquestions(id="containerquestions1")
+          h2 #{question1.region}
+              h3 #{question1.question}
+              each option in options1 
+                if option
+                    li #{option}
+        section.containerquestions(id="containerquestions2")
+          h2 #{question2.region}
+              h3 #{question2.question}
+              each option in options2 
+                if option
+                    li #{option}
 
 
 //https://coolors.co/palettes/popular/5b6ee1

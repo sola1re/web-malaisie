@@ -40,7 +40,7 @@ html(lang="en")
       }
 
       
-      .question-answer .answer, .region {
+      .question-answer .answer, .region, .creator {
           color: #555;
           font-style: italic;
       }
@@ -60,7 +60,7 @@ html(lang="en")
         position: fixed;
         background: white;
         width: 50%;
-        height : 85%;
+        height : 76%;
         padding: 20px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         z-index: 3;
@@ -170,8 +170,6 @@ html(lang="en")
         .catch(error => console.error('Erreur:', error));}
       }
       
-
-
       document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.modify-icon').forEach(function(item) {
           item.addEventListener('click', openModifyQuestion);
@@ -252,7 +250,7 @@ html(lang="en")
               h3 #{score.region}
               div.score #{score.score} / #{score.attempt} 
               if(score.attempt != 0) 
-                div (#{score.score*100/score.attempt} %) 
+                div(id="pourcentage-"+score.region) (#{Math.floor(score.score*100/score.attempt)} %)
               else 
                 div (0 %)
       if admin 
@@ -270,6 +268,7 @@ html(lang="en")
 
                 div.answer Answer : #{question.answer}  
                 div.region Region : #{question.region}
+                div.creator Creator : #{question.user_id}
 
               form.modifyForm(action="/modify", method="post", id="modifyForm-"+question.id, hidden)                   
                   input(type="hidden",name ="questionId", id="questionId", value=question.id,required)

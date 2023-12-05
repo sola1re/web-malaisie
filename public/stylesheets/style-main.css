@@ -112,6 +112,7 @@ img {
   font-size: 16px;
   transition: background-color 0.3s;
   margin-top: 20px;
+  width:200px;
 
   
 }
@@ -127,10 +128,13 @@ img {
   font-size: 16px;
   transition: background-color 0.3s;
   margin-top: 20px;
-
+  width:200px;
   
 }
 
+button:hover{
+  cursor:pointer;
+}
 .button-container button:hover {
   background-color: #75DDDD;
 }

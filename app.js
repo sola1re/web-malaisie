@@ -432,7 +432,7 @@ app.post("/question",(req,res)=>{
     if(username){
       db.query('INSERT INTO Questions(question,answer,option1,option2,option3,regionid,user_id) VALUES (?,?,?,?,?,?,?)',[question,answer,option1,option2,option3,regions,username], (err,results)=>{
         if (err) throw err;
-        res.render('menulogged');
+        res.redirect('menulogged');
       })
 
     }
@@ -511,7 +511,7 @@ app.post('/check-answer', (req, res) => {
     })}
     else{
       db.query('UPDATE score SET attempt = attempt + 1 WHERE idregion = ? AND username = ?', [req.body.regionid, username], (err,results)=>{
-      res.render('country', ({ bool : true},{output:{correct :false, message : "Incorrect !"}}));
+      res.render('country', ({correctAnswer : correctAnswer},{ bool : true},{output:{correct :false, message : "Incorrect !\n The correct answer was : "  + correctAnswer + "\n"}}));
     })
     };
 });

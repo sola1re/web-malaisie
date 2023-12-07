@@ -85,8 +85,17 @@ Here's the different step:
      INSERT INTO Questions (question, answer, option1, option2, option3, regionid, user_id)
      VALUES('What is the largest country in North America?', 'Canada', 'USA', 'Mexico', 'Greenland', 2,'compteadmin'),
     ('Which city is the capital of France?', 'Paris', 'Madrid', 'Berlin', 'London', 4,'compteadmin'),
-    ('Which river is the longest in Asia?', 'Yangtze River', 'Mekong River', 'Indus River', 'Ganges River', 5, 'Raph'),
+    ('Which river is the longest in Asia?', 'Yangtze River', 'Mekong River', 'Indus River', 'Ganges River', 5, 'compteadmin'),
     ('Which country is known as the "Land Down Under"?', 'Australia', 'New Zealand', 'Fiji', 'Papua New Guinea', 1, 'compteadmin'),
-    ('What is the largest desert in Africa?', 'Sahara Desert', 'Kalahari Desert', 'Namib Desert', 'Gobi Desert', 6,'Paul'),
+    ('What is the largest desert in Africa?', 'Sahara Desert', 'Kalahari Desert', 'Namib Desert', 'Gobi Desert', 6,'compteadmin'),
     ('Which mountain range runs through South America?', 'Andes', 'Rocky Mountains', 'Himalayas', 'Alps', 3,'compteadmin');
+
+    INSERT INTO score(idregion,username,score,attempt) VALUES
+    (1,"compteadmin",0,0),
+    (2,"compteadmin",0,0),
+    (3,"compteadmin",0,0),
+    (4,"compteadmin",0,0),
+    (5,"compteadmin",0,0),
+    (6,"compteadmin",0,0),
+    
 </p>

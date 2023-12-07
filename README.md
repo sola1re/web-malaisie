@@ -15,7 +15,12 @@ Here's the different step:
 * Install Node.js if it's not already installed on your computer
 * Then please import the database that you'll find at the bottom of this document, on your localhost.
 * Once the database is created, run the following command in your terminal (make sure you're located in the file of the project)
-* npm run devstart 
+* npm run devstart
+
+Feel free to create your account once you're on the website.
+You can also access the administrator part by loging in with the following credentials:
+          <strong> username: adminaccount
+          password: compteadmin</strong>
 
 <p>
 
@@ -78,17 +83,15 @@ Here's the different step:
      (6,"Africa");
 
      INSERT INTO `login` (`username`, `password`, `permission`, `idregion`) VALUES
-     ('compteadmin', '$2b$10$bdrA1nu44Dd4kEShObDWp.Ph4CTM6J4WXCjRtuUMB.QtwPU/Zx9mC', 'Admin', 5),
-     ('Paul', '$2b$10$Nnyx/KoSbPs1/ft7wlyHj.M0D6OsXGvWjxWsVodhphVZbz7HsbYby', 'User', 4),
-     ('Raph', '$2b$10$I8xSU1bLxj1Ihnix1upVLOaeUXmEMIe5lErGOT2r5Ib9dNnPn4lv.', 'User', 4);
+     ('adminaccount', '$2b$10$bdrA1nu44Dd4kEShObDWp.Ph4CTM6J4WXCjRtuUMB.QtwPU/Zx9mC', 'Admin', 5),
 
      INSERT INTO Questions (question, answer, option1, option2, option3, regionid, user_id)
-     VALUES('What is the largest country in North America?', 'Canada', 'USA', 'Mexico', 'Greenland', 2,'compteadmin'),
-    ('Which city is the capital of France?', 'Paris', 'Madrid', 'Berlin', 'London', 4,'compteadmin'),
-    ('Which river is the longest in Asia?', 'Yangtze River', 'Mekong River', 'Indus River', 'Ganges River', 5, 'compteadmin'),
-    ('Which country is known as the "Land Down Under"?', 'Australia', 'New Zealand', 'Fiji', 'Papua New Guinea', 1, 'compteadmin'),
-    ('What is the largest desert in Africa?', 'Sahara Desert', 'Kalahari Desert', 'Namib Desert', 'Gobi Desert', 6,'compteadmin'),
-    ('Which mountain range runs through South America?', 'Andes', 'Rocky Mountains', 'Himalayas', 'Alps', 3,'compteadmin');
+     VALUES('What is the largest country in North America?', 'Canada', 'USA', 'Mexico', 'Greenland', 2,'adminaccount'),
+    ('Which city is the capital of France?', 'Paris', 'Madrid', 'Berlin', 'London', 4,'adminaccount'),
+    ('Which river is the longest in Asia?', 'Yangtze River', 'Mekong River', 'Indus River', 'Ganges River', 5, 'adminaccount'),
+    ('Which country is known as the "Land Down Under"?', 'Australia', 'New Zealand', 'Fiji', 'Papua New Guinea', 1, 'adminaccount'),
+    ('What is the largest desert in Africa?', 'Sahara Desert', 'Kalahari Desert', 'Namib Desert', 'Gobi Desert', 6,'adminaccount'),
+    ('Which mountain range runs through South America?', 'Andes', 'Rocky Mountains', 'Himalayas', 'Alps', 3,'adminaccount');
 
     INSERT INTO score(idregion,username,score,attempt) VALUES
     (1,"compteadmin",0,0),

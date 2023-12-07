@@ -14,7 +14,7 @@ Here's the different step:
 * Extract it and open it in Visual Studio Code or any editor.
 * Install Node.js if it's not already installed on your computer
 * Then please import the database that you'll find at the bottom of this document, on your localhost.
-* Once the database is created, run the following command in your terminal (make sure you're located in the file of the project)
+* Once the database is created, run the following command in your terminal (make sure you're located in the file of the project) : 
 * npm run devstart
 
 Feel free to create your account once you're on the website.

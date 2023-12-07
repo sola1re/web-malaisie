@@ -19,7 +19,9 @@ Here's the different step:
 
 Feel free to create your account once you're on the website.
 You can also access the administrator part by loging in with the following credentials:
+          <br>
           <strong> username: adminaccount
+          <br>
           password: compteadmin</strong>
 
 <p>

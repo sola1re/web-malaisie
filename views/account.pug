@@ -79,7 +79,7 @@ html(lang="en")
         filter: brightness(50%);
       }
 
-      form {
+      .modifyForm {
         background: white;
         padding-top: 40px;
         border-radius: 8px;
@@ -136,6 +136,18 @@ html(lang="en")
         img {
           cursor: pointer;
           padding : 10px;
+        }
+        #searchForm{
+          background-color:#5B6EE1;
+          border:none;
+          padding-top:10px;
+          height:150px;
+          width:300px;
+
+        }
+        .search{
+          margin-top:15px;
+          width:100px;
         }
 
 
@@ -258,10 +270,8 @@ html(lang="en")
               else 
                 div (0 %)
       if admin 
-        details 
-          summary
-            h1 Admin 
-            img(src='/images/downarrow.png', width="30")
+          h1 Admin 
+          img(src='/images/downarrow.png', width="30")
           each question in questions2
               .question-answer
                 .actions
@@ -301,4 +311,3 @@ html(lang="en")
                         option(value=3) South America 
                         option(value=6) Africa 
                   input.modify(type='submit', value='Modify')
-        

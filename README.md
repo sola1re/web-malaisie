@@ -9,7 +9,7 @@
 ## About The Project
 We know that you're dying to play and challenge yourself on our website, WorldWizQuiz, but you have some steps to follow carefully in order to make it work!
 
-Here's the different step: 
+Here's the different steps: 
 * Download our project via the Zip submitted.
 * Extract it and open it in Visual Studio Code or any editor.
 * Install Node.js if it's not already installed on your computer

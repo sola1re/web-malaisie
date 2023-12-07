@@ -18,9 +18,11 @@ Here's the different step:
 * npm run devstart 
 
 <p>
-         CREATE DATABASE regionsquiz;
+
 
 ------Database:-------
+
+     CREATE DATABASE regionsquiz; --Execute this command first
      
      CREATE TABLE region (
          id INT PRIMARY KEY AUTO_INCREMENT,

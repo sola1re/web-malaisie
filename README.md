@@ -12,7 +12,7 @@ We know that you're dying to play and challenge yourself on our website, WorldWi
 Here's the different steps: 
 * Download our project via the Zip submitted.
 * Extract it and open it in Visual Studio Code or any editor.
-* Install Node.js if it's not already installed on your computer
+* Install Node.js if it's not already installed on your computer and run this command in your terminal : npm install npm@latest -g
 * Then please import the database that you'll find at the bottom of this document, on your localhost.
 * Once the database is created, run the following command in your terminal (make sure you're located in the file of the project) : 
 * npm run devstart

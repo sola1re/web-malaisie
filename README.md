@@ -1,5 +1,27 @@
-------Database:-------
 
+<h3 align="center">WorldWizQuiz</h3>
+
+  <p align="center">
+    An awesome opportunity to test your general knowledges over the different regions of the world!
+</div>
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+We know that you're dying to play and challenge yourself on our website, WorldWizQuiz, but you have some steps to follow carefully in order to make it work!
+
+Here's the different step: 
+* Download our project via the Zip submitted.
+* Extract it and open it in Visual Studio Code or any editor.
+* Install Node.js if it's not already installed on your computer
+* Then please import the database that you'll find at the bottom of this document, on your localhost.
+* Once the database is created, run the following command in your terminal (make sure you're located in the file of the project)
+* npm run devstart 
+
+<p>
+         CREATE DATABASE regionsquiz;
+
+------Database:-------
+     
      CREATE TABLE region (
          id INT PRIMARY KEY AUTO_INCREMENT,
          region ENUM("Europe","North America","South America","Oceania","Africa","Asia") NOT NULL
@@ -45,26 +67,24 @@
 
 ------Queries:-------
 
-    INSERT INTO `login` (`username`, `password`, `permission`, `idregion`) VALUES
+     INSERT INTO region (id,region) 
+     VALUES(1,"Oceania"),
+     (2,"North America"),
+     (3,"South America"),
+     (4,"Europe"),
+     (5,"Asia"),
+     (6,"Africa");
+
+     INSERT INTO `login` (`username`, `password`, `permission`, `idregion`) VALUES
      ('compteadmin', '$2b$10$bdrA1nu44Dd4kEShObDWp.Ph4CTM6J4WXCjRtuUMB.QtwPU/Zx9mC', 'Admin', 5),
      ('Paul', '$2b$10$Nnyx/KoSbPs1/ft7wlyHj.M0D6OsXGvWjxWsVodhphVZbz7HsbYby', 'User', 4),
      ('Raph', '$2b$10$I8xSU1bLxj1Ihnix1upVLOaeUXmEMIe5lErGOT2r5Ib9dNnPn4lv.', 'User', 4);
 
-    INSERT INTO Questions (question, answer, option1, option2, option3, region, user_id)
-    VALUES ('What is the largest country in North America?', 'Canada', 'USA', 'Mexico', 'Greenland', 'North America','compteadmin');
-
-    INSERT INTO Questions (question, answer, option1, option2, option3, region, user_id)
-    VALUES ('Which city is the capital of France?', 'Paris', 'Madrid', 'Berlin', 'London', 'Europe','compteadmin');
-
-    INSERT INTO Questions (question, answer, option1, option2, option3, region, user_id)
-    VALUES ('Which river is the longest in Asia?', 'Yangtze River', 'Mekong River', 'Indus River', 'Ganges River', 'Asia', 'Raph');
-
-    INSERT INTO Questions (question, answer, option1, option2, option3, region, user_id)
-    VALUES ('Which country is known as the "Land Down Under"?', 'Australia', 'New Zealand', 'Fiji', 'Papua New Guinea', 'Oceania', 'compteadmin');
-
-    INSERT INTO Questions (question, answer, option1, option2, option3, region, user_id)
-    VALUES ('What is the largest desert in Africa?', 'Sahara Desert', 'Kalahari Desert', 'Namib Desert', 'Gobi Desert', 'Africa','Paul');
-
-    INSERT INTO Questions (question, answer, option1, option2, option3, region, user_id)
-    VALUES ('Which mountain range runs through South America?', 'Andes', 'Rocky Mountains', 'Himalayas', 'Alps', 'South America','compteadmin');
-
+     INSERT INTO Questions (question, answer, option1, option2, option3, regionid, user_id)
+     VALUES('What is the largest country in North America?', 'Canada', 'USA', 'Mexico', 'Greenland', 2,'compteadmin'),
+    ('Which city is the capital of France?', 'Paris', 'Madrid', 'Berlin', 'London', 4,'compteadmin'),
+    ('Which river is the longest in Asia?', 'Yangtze River', 'Mekong River', 'Indus River', 'Ganges River', 5, 'Raph'),
+    ('Which country is known as the "Land Down Under"?', 'Australia', 'New Zealand', 'Fiji', 'Papua New Guinea', 1, 'compteadmin'),
+    ('What is the largest desert in Africa?', 'Sahara Desert', 'Kalahari Desert', 'Namib Desert', 'Gobi Desert', 6,'Paul'),
+    ('Which mountain range runs through South America?', 'Andes', 'Rocky Mountains', 'Himalayas', 'Alps', 3,'compteadmin');
+</p>

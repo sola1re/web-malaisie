@@ -57,13 +57,13 @@
     VALUES ('Which city is the capital of France?', 'Paris', 'Madrid', 'Berlin', 'London', 'Europe','compteadmin');
 
     INSERT INTO Questions (question, answer, option1, option2, option3, region, user_id)
-    VALUES ('Which river is the longest in Asia?', 'Yangtze River', 'Mekong River', 'Indus River', 'Ganges River', 'Asia', 'compteadmin');
+    VALUES ('Which river is the longest in Asia?', 'Yangtze River', 'Mekong River', 'Indus River', 'Ganges River', 'Asia', 'Raph');
 
     INSERT INTO Questions (question, answer, option1, option2, option3, region, user_id)
     VALUES ('Which country is known as the "Land Down Under"?', 'Australia', 'New Zealand', 'Fiji', 'Papua New Guinea', 'Oceania', 'compteadmin');
 
     INSERT INTO Questions (question, answer, option1, option2, option3, region, user_id)
-    VALUES ('What is the largest desert in Africa?', 'Sahara Desert', 'Kalahari Desert', 'Namib Desert', 'Gobi Desert', 'Africa','compteadmin');
+    VALUES ('What is the largest desert in Africa?', 'Sahara Desert', 'Kalahari Desert', 'Namib Desert', 'Gobi Desert', 'Africa','Paul');
 
     INSERT INTO Questions (question, answer, option1, option2, option3, region, user_id)
     VALUES ('Which mountain range runs through South America?', 'Andes', 'Rocky Mountains', 'Himalayas', 'Alps', 'South America','compteadmin');

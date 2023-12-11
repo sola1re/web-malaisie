@@ -85,7 +85,7 @@ You can also access the administrator part by loging in with the following crede
      (6,"Africa");
 
      INSERT INTO `login` (`username`, `password`, `permission`, `idregion`) VALUES
-     ('adminaccount', '$2b$10$bdrA1nu44Dd4kEShObDWp.Ph4CTM6J4WXCjRtuUMB.QtwPU/Zx9mC', 'Admin', 5),
+     ('adminaccount', '$2b$10$bdrA1nu44Dd4kEShObDWp.Ph4CTM6J4WXCjRtuUMB.QtwPU/Zx9mC', 'Admin', 5);
 
      INSERT INTO Questions (question, answer, option1, option2, option3, regionid, user_id)
      VALUES('What is the largest country in North America?', 'Canada', 'USA', 'Mexico', 'Greenland', 2,'adminaccount'),
@@ -101,6 +101,6 @@ You can also access the administrator part by loging in with the following crede
     (3,"compteadmin",0,0),
     (4,"compteadmin",0,0),
     (5,"compteadmin",0,0),
-    (6,"compteadmin",0,0),
+    (6,"compteadmin",0,0);
     
 </p>

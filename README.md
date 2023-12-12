@@ -96,11 +96,11 @@ You can also access the administrator part by loging in with the following crede
     ('Which mountain range runs through South America?', 'Andes', 'Rocky Mountains', 'Himalayas', 'Alps', 3,'adminaccount');
 
     INSERT INTO score(idregion,username,score,attempt) VALUES
-    (1,"compteadmin",0,0),
-    (2,"compteadmin",0,0),
-    (3,"compteadmin",0,0),
-    (4,"compteadmin",0,0),
-    (5,"compteadmin",0,0),
-    (6,"compteadmin",0,0);
+    (1,"adminaccount",0,0),
+    (2,"adminaccount",0,0),
+    (3,"adminaccount",0,0),
+    (4,"adminaccount",0,0),
+    (5,"adminaccount",0,0),
+    (6,"adminaccount",0,0);
     
 </p>
